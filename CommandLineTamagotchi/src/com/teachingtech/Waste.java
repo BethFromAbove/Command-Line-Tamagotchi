@@ -4,7 +4,8 @@ public class Waste {
 
     int wasteAge;
 
-    public void Waste(){
+    public Waste(){
+        System.out.println("Waste made");
 
     }
 

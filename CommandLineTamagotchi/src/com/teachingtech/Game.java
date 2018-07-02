@@ -7,7 +7,7 @@ public class Game {
     int score;
     int status;
 
-    public void Game(){
+    public Game(){
 
     }
 

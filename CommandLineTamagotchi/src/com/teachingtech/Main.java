@@ -7,12 +7,12 @@ public class Main {
 	// write your code here
 
         TextParser textParser;
-        Pet pet;
+        //Pet pet;
         Game game;
         BoardingHouse boardinghouse;
 
         textParser = new TextParser();
-        pet = new Pet();
+        //Pet myPet = new Pet();
         game = new Game();
         boardinghouse = new BoardingHouse();
 
@@ -21,7 +21,18 @@ public class Main {
         String name;
         System.out.println("Enter your pet's name: ");
         name = scan.nextLine();
+
+
+
         System.out.println("Your pet's name is "+name);
+
+        System.out.println("What would you like to do?");
+
+        int i = 0;
+        while (i < 10){
+            String text = scan.nextLine();
+            textParser.read(text);
+        }
 
     }
 
