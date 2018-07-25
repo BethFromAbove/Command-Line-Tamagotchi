@@ -6,7 +6,7 @@ public class TextParser {
 
     String instruction;
     Pet myPet = new Pet();
-    
+
 
     public TextParser() {
 
@@ -15,33 +15,47 @@ public class TextParser {
     public void read(String instruction) {
         //instruction = text;
         //System.out.println("instruction is" + instruction);
-        if (instruction.equals("feed")){
-            System.out.println(instruction);
-            this.feedPet();
 
-        }
-        else if (instruction.equals("play")){
-            System.out.println(instruction);
+        switch (instruction.toLowerCase()){
+            case "feed":
+                System.out.println(instruction);
+                this.feedPet();
+                break;
+            case "check":
+                System.out.println(instruction);
+                int[] stats = this.checkStats();
 
+                System.out.println("Age = " +stats[0]);
+                System.out.println("Hunger = " +stats[1]);
+                System.out.println("Happiness = " +stats[2]);
+                System.out.println("Health = " +stats[3]);
+                break;
+            case "check is sick":
+                System.out.println(instruction);
+                System.out.println(myPet.checkIsSick());
+                break;
+            case "cure":
+                System.out.println(instruction);
+                if (myPet.isSick == true){
+                    this.curePet();
+                    System.out.println("Pet is cured");
+                }
+                else{
+                    System.out.println("Pet does not need to be cured");
+                }
+                break;
+            case "play":
+                System.out.println(instruction);
+                break;
+            case "tidy":
+                System.out.println(instruction);
+                this.clearUpWaste();
+                break;
+            default:
+                System.out.println("Please try again");
+                break;
         }
-        else if (instruction.equals("cure")){
-            System.out.println(instruction);
-        }
-        else if (instruction.equals("check")){
-            System.out.println(instruction);
-            //System.out.println(Arrays.toString(this.checkStats()));
 
-            int[] stats = this.checkStats();
-
-            System.out.println("Age = " +stats[0]);
-            System.out.println("Hunger = " +stats[1]);
-            System.out.println("Happiness = " +stats[2]);
-            System.out.println("Health = " +stats[3]);
-        }
-        else if (instruction.equals("tidy")){
-            System.out.println(instruction);
-            this.clearUpWaste();
-        }
 
 
 
@@ -54,7 +68,7 @@ public class TextParser {
     }
 
     public void feedPet(){
-        int hunger = myPet.setHunger();
+        int hunger = myPet.feed();
 
         if (hunger == 200){
             System.out.println("Pet is full");
@@ -67,7 +81,7 @@ public class TextParser {
     }
 
     public void curePet(){
-
+        myPet.isSick = false;
     }
 
     public int[] checkStats(){
@@ -77,8 +91,8 @@ public class TextParser {
 
     }
 
-    public void inspectWaste(Waste waste){
-
+    public void makeSick(){
+        myPet.isSick = true;
     }
 
     public void clearUpWaste(){

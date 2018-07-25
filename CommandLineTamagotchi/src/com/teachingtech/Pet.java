@@ -11,11 +11,11 @@ public class Pet {
     int happiness;
     int health;
     boolean isSick;
-    Waste waste;
+
 
     Pet(){
         age = 0;
-        hunger = 100;
+        hunger = 0;
         happiness = 100;
         health = 100;
         isSick = false;
@@ -25,7 +25,7 @@ public class Pet {
 
     }
 
-    void makeWaste(){ //make waste at random intervals
+    public void makeWaste(){ //make waste at random intervals
 
         Random rand = new Random();
         int max = 5000;
@@ -37,12 +37,23 @@ public class Pet {
         wasteTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Waste waste = new Waste();
+                Waste waste = new Waste(); //makes waste
+                Timer wasteChecker = new Timer(); //checks every 10 seconds to see if waste has made pet sick
+
+                wasteChecker.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (waste.makePetSick){
+                            isSick = true;//change the value for the pet
+                            waste.makePetSick = false;//reset petSick so it doesn't keep triggering
+                        }
+                    }
+                }, 1000, 1000);
+
             }
         }, n); //make a waste at a random time between a min and max value in ms
 
-
-        //currently just makes one waste
+                //currently just makes one waste
     }
 
     void growUp(){
@@ -53,8 +64,11 @@ public class Pet {
             @Override
             public void run() {
                 age = age + 10;
-                if (age % 100 == 0) { //reduce hunger (confusing?) by 10 every 10 seconds
-                    hunger = hunger - 10;
+                if (age % 100 == 0) { //increase hunger by 10 every 10 seconds
+                    hunger = hunger + 10;
+                    if (isSick){
+                        health = health - 10; //decrease health if sick
+                    }
                 }
             }
         }, 1000, 1000);//age increases by 10 every second
@@ -68,18 +82,17 @@ public class Pet {
     }
 
     public int[] getStats(){
-        //int[] stats = {0, 0, 0, 0};
         int[] stats = {age, hunger, happiness, health};
         return stats;
 
     }
 
-    public int setHunger(){
+    public int feed(){
         if (hunger >= 100){
             return 200; // pet is full
         }
         else{
-            hunger = hunger + 10;
+            hunger = hunger - 10;
             return hunger;
         }
 
@@ -97,21 +110,21 @@ public class Pet {
     }
 
     public int setHealth(){
+
         return 0;
 
     }
 
-    public boolean checkIsSick(){ // included in original plan, but seems pointless. will re-address later
-        if (isSick == true){
-            return true;
-        }
-        else {
-            return false;
-        }
+    public void setSick(){
+        isSick = true;
     }
 
-    public Waste checkWaste(){
-        return waste;
+    public boolean checkIsSick(){
+        return isSick;
+    }
+
+    public boolean checkWaste(){
+        return true;
 
     }
 

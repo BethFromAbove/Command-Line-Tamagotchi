@@ -28,8 +28,8 @@ public class Main {
 
         System.out.println("What would you like to do?");
 
-        int i = 0;
-        while (i < 10){
+        //int i = 0;
+        while (true){
             String text = scan.nextLine();
             textParser.read(text);
         }
