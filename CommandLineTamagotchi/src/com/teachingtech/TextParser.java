@@ -37,7 +37,8 @@ public class TextParser {
             case "cure":
                 System.out.println(instruction);
                 if (myPet.isSick == true){
-                    this.curePet();
+                    myPet.isSick = false;
+                    //this.curePet();
                     System.out.println("Pet is cured");
                 }
                 else{
@@ -47,9 +48,10 @@ public class TextParser {
             case "play":
                 System.out.println(instruction);
                 break;
-            case "tidy":
+            case "clean up waste":
                 System.out.println(instruction);
-                this.clearUpWaste();
+                myPet.cleanWaste();
+                //this.clearUpWaste();
                 break;
             default:
                 System.out.println("Please try again");

@@ -1,5 +1,6 @@
 package com.teachingtech;
 
+import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.Random;
 import java.util.Timer;
@@ -11,6 +12,7 @@ public class Pet {
     int happiness;
     int health;
     boolean isSick;
+    int clean;
 
 
     Pet(){
@@ -19,6 +21,7 @@ public class Pet {
         happiness = 100;
         health = 100;
         isSick = false;
+        clean = 0; //default clean state
 
         this.growUp(); //start timers when created
         this.makeWaste();
@@ -28,8 +31,8 @@ public class Pet {
     public void makeWaste(){ //make waste at random intervals
 
         Random rand = new Random();
-        int max = 5000;
-        int min = 2000;
+        int max = 500000; //500s
+        int min = 100000; //100s
         int n = rand.nextInt((max - min) + 1) + min;
 
         Timer wasteTimer = new Timer();
@@ -38,20 +41,30 @@ public class Pet {
             @Override
             public void run() {
                 Waste waste = new Waste(); //makes waste
+                clean = 1; //dirty
+                System.out.println("clean = " + clean);
+
                 Timer wasteChecker = new Timer(); //checks every 10 seconds to see if waste has made pet sick
 
                 wasteChecker.scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
-                        if (waste.makePetSick){
+                        if (waste.makePetSick()){
                             isSick = true;//change the value for the pet
-                            waste.makePetSick = false;//reset petSick so it doesn't keep triggering
+                            //System.out.println("Pet is sick");
+                            waste.resetPetSick(); //waste can make pet sick more than once
                         }
+
+                        if (clean == 0){
+                            System.out.println("clean = " + clean);
+                            wasteChecker.cancel();
+                            waste.cured = true;
+                        } //for some reason boolean going back to true, now int
                     }
                 }, 1000, 1000);
 
             }
-        }, n); //make a waste at a random time between a min and max value in ms
+        }, 10000); //make a waste at a random time between a min and max value in ms
 
                 //currently just makes one waste
     }
@@ -64,10 +77,27 @@ public class Pet {
             @Override
             public void run() {
                 age = age + 10;
+
                 if (age % 100 == 0) { //increase hunger by 10 every 10 seconds
                     hunger = hunger + 10;
+                    if (hunger == 80)
+                    {
+                        Toolkit.getDefaultToolkit().beep(); //beep
+                        System.out.println("Pet is very hungry!");
+                    }
+                    else if (hunger == 100)
+                    {
+                        Toolkit.getDefaultToolkit().beep();
+                        System.out.println("Pet died of hunger. Age was " + age);
+                        System.exit(0);
+                    }
                     if (isSick){
                         health = health - 10; //decrease health if sick
+                        if (health ==0){
+                            Toolkit.getDefaultToolkit().beep();
+                            System.out.println("Pet died of sickness. Age was " + age);
+                            System.exit(2);
+                        }
                     }
                 }
             }
@@ -123,8 +153,9 @@ public class Pet {
         return isSick;
     }
 
-    public boolean checkWaste(){
-        return true;
+    public int cleanWaste(){
+        clean = 0;
+        return clean;
 
     }
 

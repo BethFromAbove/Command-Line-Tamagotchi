@@ -1,33 +1,43 @@
 package com.teachingtech;
 
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Waste {
 
-    int wasteAge = 0;
-    boolean makePetSick = false;
+    int timeTilSick = 5000;
+    boolean petSick = false;
+    boolean cured = false;
 
     Waste(){
         System.out.println("Waste made");
-
+        Toolkit.getDefaultToolkit().beep(); // beep
 
         Timer wasteAgeTimer = new Timer();
 
-        wasteAgeTimer.schedule(new TimerTask() {
+        wasteAgeTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                makePetSick = true; // pet gets sick after 10s of waste arriving - can be random
+                if (cured){
+                    wasteAgeTimer.cancel();
+                }
+                petSick = true; // pet gets sick after 5s of waste arriving - can be random
+                Toolkit.getDefaultToolkit().beep(); // beep
                 System.out.println("Pet is sick");
+
             }
-        }, 10000);
-
-
+        }, timeTilSick, 10000); //keeps making pet sick if not cleaned up
 
     }
 
-    public boolean getPetSick(){
-        return makePetSick;
+    public boolean makePetSick(){ //getter
+        return petSick;
+
+    }
+
+    public void resetPetSick(){ //setter
+        petSick = false;
 
     }
 
