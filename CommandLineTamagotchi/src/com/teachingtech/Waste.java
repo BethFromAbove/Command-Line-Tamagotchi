@@ -22,9 +22,11 @@ public class Waste {
                 if (cured){
                     wasteAgeTimer.cancel();
                 }
-                petSick = true; // pet gets sick after 5s of waste arriving - can be random
-                Toolkit.getDefaultToolkit().beep(); // beep
-                System.out.println("Pet is sick");
+                else {
+                    petSick = true; // pet gets sick after 5s of waste arriving - can be random
+                    Toolkit.getDefaultToolkit().beep(); // beep
+                    System.out.println("Pet is sick");
+                }
 
             }
         }, timeTilSick, 10000); //keeps making pet sick if not cleaned up

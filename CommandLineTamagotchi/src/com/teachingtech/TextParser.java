@@ -36,9 +36,8 @@ public class TextParser {
                 break;
             case "cure":
                 System.out.println(instruction);
-                if (myPet.isSick == true){
+                if (myPet.isSick){
                     myPet.isSick = false;
-                    //this.curePet();
                     System.out.println("Pet is cured");
                 }
                 else{
@@ -57,19 +56,14 @@ public class TextParser {
                 System.out.println("Please try again");
                 break;
         }
-
-
-
-
     }
 
 
     public int playGame(int guessedNumber){
         return 0;
-
     }
 
-    public void feedPet(){
+    private void feedPet(){
         int hunger = myPet.feed();
 
         if (hunger == 200){
@@ -78,28 +72,18 @@ public class TextParser {
         else{
             System.out.println("Yum! Pet hunger now = " + hunger);
         }
-
-
     }
 
     public void curePet(){
         myPet.isSick = false;
     }
 
-    public int[] checkStats(){
+    private int[] checkStats(){
 
-        int[] myStats = myPet.getStats();
-        return myStats;
-
+        //int[] myStats = myPet.getStats();
+        return myPet.getStats();
     }
 
-    public void makeSick(){
-        myPet.isSick = true;
-    }
-
-    public void clearUpWaste(){
-
-    }
 
     public void sendBoardingHouse(){
 

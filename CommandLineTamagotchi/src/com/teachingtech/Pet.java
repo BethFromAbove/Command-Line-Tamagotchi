@@ -55,11 +55,11 @@ public class Pet {
                             waste.resetPetSick(); //waste can make pet sick more than once
                         }
 
-                        if (clean == 0){
+                        if (clean == 0){//for some reason boolean going back to true, now int
                             System.out.println("clean = " + clean);
                             wasteChecker.cancel();
-                            waste.cured = true;
-                        } //for some reason boolean going back to true, now int
+                            waste.cured = true; // @todo better to use setter here
+                        }
                     }
                 }, 1000, 1000);
 
@@ -114,7 +114,6 @@ public class Pet {
     public int[] getStats(){
         int[] stats = {age, hunger, happiness, health};
         return stats;
-
     }
 
     public int feed(){
