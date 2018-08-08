@@ -13,6 +13,7 @@ public class Pet {
     int health;
     boolean isSick;
     int clean;
+    String name;
 
 
     Pet(){
@@ -83,19 +84,19 @@ public class Pet {
                     if (hunger == 80)
                     {
                         Toolkit.getDefaultToolkit().beep(); //beep
-                        System.out.println("Pet is very hungry!");
+                        System.out.println(name + " is very hungry!");
                     }
                     else if (hunger == 100)
                     {
                         Toolkit.getDefaultToolkit().beep();
-                        System.out.println("Pet died of hunger. Age was " + age);
+                        System.out.println(name + " died of hunger. Age was " + age);
                         System.exit(0);
                     }
                     if (isSick){
                         health = health - 10; //decrease health if sick
                         if (health ==0){
                             Toolkit.getDefaultToolkit().beep();
-                            System.out.println("Pet died of sickness. Age was " + age);
+                            System.out.println(name + " died of sickness. Age was " + age);
                             System.exit(2);
                         }
                     }
@@ -111,18 +112,22 @@ public class Pet {
         return age;
     }
 
+    public void setName(String input){
+        this.name = input;
+    }
+
     public int[] getStats(){
         int[] stats = {age, hunger, happiness, health};
         return stats;
     }
 
-    public int feed(){
-        if (hunger >= 100){
-            return 200; // pet is full
+    public void feed(){
+        if (hunger <= 0){
+            System.out.println(name + " is full");
         }
         else{
             hunger = hunger - 10;
-            return hunger;
+            System.out.println("Yum! " + name + " hunger now = " + hunger);
         }
 
     }

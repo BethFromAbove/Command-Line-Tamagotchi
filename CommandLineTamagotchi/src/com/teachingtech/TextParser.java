@@ -1,29 +1,26 @@
 package com.teachingtech;
 
-import java.util.Arrays;
 
 public class TextParser {
 
     String instruction;
     Pet myPet = new Pet();
 
-
     public TextParser() {
 
     }
 
     public void read(String instruction) {
-        //instruction = text;
         //System.out.println("instruction is" + instruction);
 
         switch (instruction.toLowerCase()){
             case "feed":
                 System.out.println(instruction);
-                this.feedPet();
+                myPet.feed();
                 break;
             case "check":
                 System.out.println(instruction);
-                int[] stats = this.checkStats();
+                int[] stats = myPet.getStats();
 
                 System.out.println("Age = " +stats[0]);
                 System.out.println("Hunger = " +stats[1]);
@@ -63,30 +60,12 @@ public class TextParser {
         return 0;
     }
 
-    private void feedPet(){
-        int hunger = myPet.feed();
-
-        if (hunger == 200){
-            System.out.println("Pet is full");
-        }
-        else{
-            System.out.println("Yum! Pet hunger now = " + hunger);
-        }
-    }
-
-    public void curePet(){
-        myPet.isSick = false;
-    }
-
-    private int[] checkStats(){
-
-        //int[] myStats = myPet.getStats();
-        return myPet.getStats();
-    }
-
-
     public void sendBoardingHouse(){
 
+    }
+
+    public void setName(String name){
+        myPet.setName(name);
     }
 
 
