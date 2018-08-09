@@ -14,6 +14,7 @@ public class Pet {
     boolean isSick;
     int clean;
     String name;
+    boolean boarding;
 
 
     Pet(){
@@ -23,6 +24,7 @@ public class Pet {
         health = 100;
         isSick = false;
         clean = 0; //default clean state
+        boarding = false;
 
         this.growUp(); //start timers when created
         this.makeWaste();
@@ -77,10 +79,17 @@ public class Pet {
         ageTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+
                 age = age + 10;
+
+                if (boarding){
+                    ageTimer.cancel();
+                    System.out.println("Pet is boarding, age is paused at " + age);
+                }
 
                 if (age % 100 == 0) { //increase hunger by 10 every 10 seconds
                     hunger = hunger + 10;
+                    happiness = happiness - 10; //pet gets sadder (change rates of change later)
                     if (hunger == 80)
                     {
                         Toolkit.getDefaultToolkit().beep(); //beep
@@ -93,7 +102,7 @@ public class Pet {
                         System.exit(0);
                     }
                     if (isSick){
-                        health = health - 10; //decrease health if sick
+                        health = health - 10; //decrease health if sick every 10 seconds
                         if (health ==0){
                             Toolkit.getDefaultToolkit().beep();
                             System.out.println(name + " died of sickness. Age was " + age);
@@ -146,6 +155,18 @@ public class Pet {
     public int setHealth(){
 
         return 0;
+
+    }
+
+    public void sendToBoardinghouse(){
+        if (boarding){
+            System.out.println(name + " is already at boarding house");
+        }
+        else{
+            boarding = true;
+            System.out.println(name + " is at boarding house. All systems paused");
+            System.out.println("Type 'return pet' to get pet back");
+        }
 
     }
 

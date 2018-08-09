@@ -43,11 +43,23 @@ public class TextParser {
                 break;
             case "play":
                 System.out.println(instruction);
+                Game myGame = new Game();
+                System.out.println(myGame.getResult());
+                System.out.println("Happiness is now " + myPet.setHappiness());
                 break;
             case "clean up waste":
                 System.out.println(instruction);
                 myPet.cleanWaste();
-                //this.clearUpWaste();
+                break;
+            case "send to boarding house":
+                System.out.println(instruction);
+                myPet.sendToBoardinghouse();
+                break;
+            case "return pet":
+                System.out.println(instruction);
+                System.out.println(myPet.name + " is back from boarding house");
+                myPet.boarding = false;
+                myPet.growUp();
                 break;
             default:
                 System.out.println("Please try again");
