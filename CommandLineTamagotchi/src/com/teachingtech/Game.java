@@ -5,27 +5,20 @@ import java.util.Scanner;
 
 public class Game {
 
-    String result;
+    private String result;
 
-
-    public Game(){
+    Game(){
 
         Scanner scan = new Scanner(System.in);
         System.out.println("Choose rock, paper or scissors: ");
         String choice = scan.nextLine();
         result = this.playGame(choice);
-
     }
-
-    public String getResult(){
+    String getResult(){
         return result;
     }
 
-    public void increaseHappiness(){
-
-    }
-
-    public String playGame(String playerChoice){
+    private String playGame(String playerChoice){
         Random rand = new Random();
         int n = rand.nextInt(3) + 1; //random number between 1 and 3
         //1 is rock, 2 is paper, 3 is scissors
@@ -56,11 +49,8 @@ public class Game {
                     return "You draw!";
                 }
             default:
-                //System.out.println("Please try again");
                 return "Play properly!";
         }
-
-
     }
 
 }

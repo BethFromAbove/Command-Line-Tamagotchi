@@ -3,10 +3,9 @@ package com.teachingtech;
 
 public class TextParser {
 
-    String instruction;
     Pet myPet = new Pet();
 
-    public TextParser() {
+    TextParser() {
 
     }
 
@@ -14,12 +13,13 @@ public class TextParser {
         //System.out.println("instruction is" + instruction);
 
         switch (instruction.toLowerCase()){
+            case "help":
+                System.out.println("Commands are feed, check, check is sick, cure, clean, play, send to bed");
+                break;
             case "feed":
-                System.out.println(instruction);
                 myPet.feed();
                 break;
             case "check":
-                System.out.println(instruction);
                 int[] stats = myPet.getStats();
 
                 System.out.println("Age = " +stats[0]);
@@ -28,13 +28,11 @@ public class TextParser {
                 System.out.println("Health = " +stats[3]);
                 break;
             case "check is sick":
-                System.out.println(instruction);
                 System.out.println(myPet.checkIsSick());
                 break;
             case "cure":
-                System.out.println(instruction);
-                if (myPet.isSick){
-                    myPet.isSick = false;
+                if (myPet.checkIsSick()){
+                    myPet.cure();
                     System.out.println("Pet is cured");
                 }
                 else{
@@ -42,23 +40,19 @@ public class TextParser {
                 }
                 break;
             case "play":
-                System.out.println(instruction);
                 Game myGame = new Game();
                 System.out.println(myGame.getResult());
                 System.out.println("Happiness is now " + myPet.setHappiness());
                 break;
-            case "clean up waste":
-                System.out.println(instruction);
+            case "clean":
                 myPet.cleanWaste();
                 break;
-            case "send to boarding house":
-                System.out.println(instruction);
-                myPet.sendToBoardinghouse();
+            case "send to bed":
+                myPet.sendToBed();
                 break;
-            case "return pet":
-                System.out.println(instruction);
-                System.out.println(myPet.name + " is back from boarding house");
-                myPet.boarding = false;
+            case "wake up":
+                System.out.println(myPet.name + " is awake!");
+                myPet.sleep = false;
                 myPet.growUp();
                 break;
             default:
@@ -67,18 +61,7 @@ public class TextParser {
         }
     }
 
-
-    public int playGame(int guessedNumber){
-        return 0;
-    }
-
-    public void sendBoardingHouse(){
-
-    }
-
     public void setName(String name){
         myPet.setName(name);
     }
-
-
 }

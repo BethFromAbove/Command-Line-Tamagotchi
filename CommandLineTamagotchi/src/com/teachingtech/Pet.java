@@ -1,20 +1,19 @@
 package com.teachingtech;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Pet {
-    int age;
-    int hunger;
-    int happiness;
-    int health;
-    boolean isSick;
-    int clean;
+    private int age;
+    private int hunger;
+    private int happiness;
+    private int health;
+    private boolean isSick;
+    private int clean;
     String name;
-    boolean boarding;
+    boolean sleep;
 
 
     Pet(){
@@ -23,15 +22,15 @@ public class Pet {
         happiness = 100;
         health = 100;
         isSick = false;
-        clean = 0; //default clean state
-        boarding = false;
+        clean = 0; //default clean state, 1 is dirty
+        sleep = false;
 
         this.growUp(); //start timers when created
         this.makeWaste();
 
     }
 
-    public void makeWaste(){ //make waste at random intervals
+    private void makeWaste(){ //make waste at random intervals
 
         Random rand = new Random();
         int max = 500000; //500s
@@ -40,36 +39,38 @@ public class Pet {
 
         Timer wasteTimer = new Timer();
 
-        wasteTimer.schedule(new TimerTask() {
+        wasteTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+
+                if (!sleep) { //only make waste if pet is not asleep
                 Waste waste = new Waste(); //makes waste
                 clean = 1; //dirty
-                System.out.println("clean = " + clean);
+                //System.out.println("clean = " + clean);
 
                 Timer wasteChecker = new Timer(); //checks every 10 seconds to see if waste has made pet sick
 
                 wasteChecker.scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
-                        if (waste.makePetSick()){
+                        if (waste.makePetSick()) {
                             isSick = true;//change the value for the pet
-                            //System.out.println("Pet is sick");
+                            Toolkit.getDefaultToolkit().beep(); // beep
+                            System.out.println("Pet is sick");
                             waste.resetPetSick(); //waste can make pet sick more than once
                         }
 
-                        if (clean == 0){//for some reason boolean going back to true, now int
-                            System.out.println("clean = " + clean);
+                        if (clean == 0) {//for some reason boolean going back to true, now int
+                            //System.out.println("clean = " + clean);
                             wasteChecker.cancel();
-                            waste.cured = true; // @todo better to use setter here
+                            waste.setClean();
                         }
                     }
                 }, 1000, 1000);
-
             }
-        }, 10000); //make a waste at a random time between a min and max value in ms
+            }
+        }, 10000, 30000); //make a waste at a random time between a min and max value in ms
 
-                //currently just makes one waste
     }
 
     void growUp(){
@@ -80,11 +81,11 @@ public class Pet {
             @Override
             public void run() {
 
-                age = age + 10;
+                age = age + 10; //age increases by 10 every second
 
-                if (boarding){
+                if (sleep){
                     ageTimer.cancel();
-                    System.out.println("Pet is boarding, age is paused at " + age);
+                    System.out.println(name + " is asleep, age is paused at " + age);
                 }
 
                 if (age % 100 == 0) { //increase hunger by 10 every 10 seconds
@@ -111,77 +112,75 @@ public class Pet {
                     }
                 }
             }
-        }, 1000, 1000);//age increases by 10 every second
-
-
-
+        }, 1000, 1000); //starts after one second then repeats every second
     }
 
-    public int getAge(){
-        return age;
-    }
-
-    public void setName(String input){
+    void setName(String input){
         this.name = input;
     }
 
-    public int[] getStats(){
+    int[] getStats(){
         int[] stats = {age, hunger, happiness, health};
         return stats;
     }
 
-    public void feed(){
-        if (hunger <= 0){
-            System.out.println(name + " is full");
+    void feed(){
+        if(happiness <= 30){
+            System.out.println(name + " is too sad to eat :(");
         }
         else{
-            hunger = hunger - 10;
-            System.out.println("Yum! " + name + " hunger now = " + hunger);
+            if (hunger <= 0){
+                System.out.println(name + " is full");
+            }
+            else{
+                hunger = hunger - 10;
+                System.out.println("Yum! " + name + " hunger now = " + hunger);
+                if (health < 100){
+                    health = health + 5;
+                    System.out.println(name + " is feeling a bit better now. Health = " + health);
+                }
+            }
         }
-
     }
 
-    public int setHappiness(){
+    int setHappiness(){
         if (happiness >= 100){
-            return 200; // pet is happy
+            System.out.println(name + " is happy as can be");
+            return happiness; // pet is happy
         }
         else {
             happiness = happiness + 10;
             return happiness;
         }
-
     }
 
-    public int setHealth(){
-
-        return 0;
-
-    }
-
-    public void sendToBoardinghouse(){
-        if (boarding){
-            System.out.println(name + " is already at boarding house");
+    void sendToBed(){
+        if (sleep){
+            System.out.println(name + " is already asleep");
         }
         else{
-            boarding = true;
-            System.out.println(name + " is at boarding house. All systems paused");
-            System.out.println("Type 'return pet' to get pet back");
+            if (clean == 1){
+                System.out.println(name + " cannot sleep now, this place is filthy!");
+            }
+            else {
+                sleep = true;
+                System.out.println(name + " has gone to bed. All systems paused");
+                System.out.println("Type 'wake up' to get pet up");
+            }
         }
-
     }
 
-    public void setSick(){
-        isSick = true;
+    void cure(){
+        isSick = false;
     }
 
-    public boolean checkIsSick(){
+    boolean checkIsSick(){
         return isSick;
     }
 
-    public int cleanWaste(){
+    void cleanWaste(){
         clean = 0;
-        return clean;
-
+        System.out.println("Everything is nice and clean");
     }
 
 }
